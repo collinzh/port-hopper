@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"strconv"
 	"strings"
 )
 
@@ -54,7 +55,27 @@ func GetConfiguration() *Config {
 		bindAddr[idx] = Address{Host: host, Port: *bindPortAddr}
 	}
 
+	dPortIdx := strings.LastIndex(*destAddr, ":")
+	if dPortIdx == -1 {
+		log.Fatalln("Missing destination port")
+	}
+
+	dHost := (*destAddr)[0:dPortIdx]
+	dPort, err := strconv.Atoi((*destAddr)[dPortIdx:])
+	if len(dHost) == 0 {
+		log.Fatalln("Invalid destination address")
+	}
+	if err != nil {
+		log.Fatalln("Invalid destination port")
+	}
+
 	config = &Config{
 		BindAddresses: bindAddr,
+		Destination: Address{
+			Host: dHost,
+			Port: dPort,
+		},
 	}
+
+	return config
 }
