@@ -61,7 +61,7 @@ func GetConfiguration() *Config {
 	}
 
 	dHost := (*destAddr)[0:dPortIdx]
-	dPort, err := strconv.Atoi((*destAddr)[dPortIdx:])
+	dPort, err := strconv.Atoi((*destAddr)[dPortIdx+1:])
 	if len(dHost) == 0 {
 		log.Fatalln("Invalid destination address")
 	}
